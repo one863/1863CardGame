@@ -8,7 +8,7 @@ Un jeu de cartes stratégique développé avec **React** et **boardgame.io**. Ce
 
 Ce projet est protégé par la licence **GNU GPLv3**.
 
-**© 2026 Yannick Zanconato**
+**© 2026 One863**
 
 En vertu de cette licence :
 - Vous pouvez copier, modifier et distribuer ce logiciel.
