@@ -1,0 +1,403 @@
+:root {
+  --primary-color: #1e1e1e; /* Fond sombre UI */
+  --accent-color: #00ff88;  /* Vert Néon pour les actions */
+  --field-color: #2e7d32;   /* Vert Pelouse */
+  --field-line: rgba(255, 255, 255, 0.3);
+  --card-width: 120px;
+  --card-height: 170px;
+  --danger-color: #ff4444;
+  --text-light: #f5f5f5;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--primary-color);
+  color: var(--text-light);
+  overflow: hidden; /* Empêche le scroll pendant le match */
+}
+
+/* --- STRUCTURE PRINCIPALE --- */
+.app-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- MENU & UI --- */
+.screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+h1 { font-size: 2.5rem; text-transform: uppercase; margin-bottom: 2rem; color: var(--accent-color); }
+button {
+  padding: 12px 24px;
+  margin: 10px;
+  font-size: 1.2rem;
+  background: var(--accent-color);
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.1s;
+}
+button:hover { transform: scale(1.05); }
+button:disabled { background: #555; cursor: not-allowed; }
+
+/* --- LE TERRAIN (BOARD) --- */
+.game-board {
+  display: grid;
+  /* Modification ici : On force une séparation nette */
+  grid-template-rows: 1fr 4px 1fr; 
+  width: 100%;
+  height: 100%;
+  background-color: var(--field-color);
+  background-image: 
+    linear-gradient(0deg, transparent 24%, var(--field-line) 25%, var(--field-line) 26%, transparent 27%, transparent 74%, var(--field-line) 75%, var(--field-line) 76%, transparent 77%, transparent),
+    linear-gradient(90deg, transparent 24%, var(--field-line) 25%, var(--field-line) 26%, transparent 27%, transparent 74%, var(--field-line) 75%, var(--field-line) 76%, transparent 77%, transparent);
+  background-size: 50px 50px;
+  perspective: 1000px;
+  overflow: hidden; /* Important : empêche le débordement global */
+   z-index: 1;
+}
+/* Ligne Médiane (Séparateur visuel) */
+.game-board > div:nth-child(2) {
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+  z-index: 0;
+}
+
+.field-half {
+  display: flex;
+  flex-direction: column;
+  /* Modification : On colle les zones au bord opposé de la ligne médiane */
+  justify-content: flex-end; 
+  align-items: center;
+  padding: 20px;
+  position: relative;
+  height: 100%; /* Force à prendre toute la case de la grille */
+}
+/* --- ZONE ADVERSAIRE (HAUT) --- */
+.field-half.opponent {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Colle le contenu vers le haut */
+  align-items: center;
+  /* CORRECTION 1 : On pousse le terrain de 200px vers le bas pour laisser la place à la main adverse */
+  padding-top: 180px; 
+  position: relative;
+}
+/* --- ZONE JOUEUR (BAS) --- */
+.field-half.player {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Colle le contenu vers le bas */
+  align-items: center;
+  /* CORRECTION 2 : On pousse le terrain de 200px vers le haut pour laisser la place à VOTRE main */
+  padding-bottom: 180px; 
+  position: relative;
+}
+.hand-zone {
+  position: absolute;
+  bottom: 10px;        /* On la colle en bas de l'écran */
+  left: 50%;           /* On centre le début... */
+  transform: translateX(-50%); /* ...et on corrige pour centrer parfaitement */
+  display: flex;
+  gap: -40px;          /* Les cartes se chevauchent un peu comme un éventail */
+  z-index: 100;        /* La main passe TOUJOURS au dessus du terrain */
+  padding: 10px;
+  transition: bottom 0.3s ease;
+}
+
+.field-zone {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  height: var(--card-height); /* Hauteur fixe pour éviter que la zone ne s'écrase */
+  width: auto;                /* S'adapte au nombre de cartes */
+  min-width: 50%;             /* Largeur mini pour faire joli */
+  padding: 15px;
+  border: 2px dashed rgba(255,255,255,0.3);
+  border-radius: 15px;
+  background: rgba(0,0,0,0.2);
+  margin: 10px 0;             /* Un peu d'air autour */
+}
+/* Votre main : Collée tout en bas */
+.field-half.player .hand-zone {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: -20px;
+  z-index: 100;
+  padding: 10px;
+  transition: bottom 0.2s;
+}
+
+/* Effet au survol de la main */
+.field-half.player .hand-zone:hover {
+  bottom: 20px;
+  gap: 5px;
+}
+/* Main adverse : Collée tout en haut */
+.field-half.opponent .hand-zone {
+  position: absolute;
+  top: -30px; /* On la remonte pour qu'elle ne gêne pas */
+  left: 50%;
+  transform: translateX(-50%) scale(0.8); /* Un peu plus petite pour la perspective */
+  z-index: 100;
+}
+/* --- LA CARTE --- */
+.card {
+  width: var(--card-width);
+  height: var(--card-height);
+  background: #fff;
+  border-radius: 8px;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  transition: transform 0.2s;
+  user-select: none;
+  cursor: pointer;
+}
+
+.card:hover { transform: translateY(-10px); z-index: 20; }
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  background: #eee;
+  border-radius: 8px 8px 0 0;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.card-image {
+  flex: 1;
+  background: #ccc; /* Placeholder image */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+.card-stats {
+  padding: 5px;
+  text-align: center;
+}
+
+.stat-vaep {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--primary-color);
+}
+
+.card-cost {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: gold;
+  color: black;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Carte retournée (Momentum / Deck adverse) */
+.card.flipped {
+  background: radial-gradient(circle, #2c3e50 0%, #000 100%);
+  border: 2px solid #fff;
+}
+.card.flipped * { display: none; } /* Cache le contenu */
+
+/* Indicateurs d'état */
+.card.exhausted { filter: grayscale(100%); opacity: 0.7; }
+.card.target { box-shadow: 0 0 15px var(--danger-color); border: 2px solid var(--danger-color); }
+.scoreboard-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 15px;
+  border-bottom: 2px solid var(--accent-color);
+  width: 100%;
+}
+
+.match-info {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+}
+
+.score-digit {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--accent-color);
+  margin: 0 15px;
+}
+
+.momentum-bar {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.slot {
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--accent-color);
+  margin: 0 4px;
+  border-radius: 2px;
+}
+
+.slot.active {
+  background: var(--accent-color);
+  box-shadow: 0 0 8px var(--accent-color);
+}
+/* --- MODAL SYSTEM --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.modal-content {
+  text-align: center;
+  padding: 40px;
+  border-radius: 15px;
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-content.goal {
+  background: var(--accent-color); /* Vert Néon */
+  color: #000;
+  box-shadow: 0 0 50px var(--accent-color);
+}
+
+.modal-content.duel {
+  background: var(--danger-color); /* Rouge */
+  color: #fff;
+  box-shadow: 0 0 50px var(--danger-color);
+}
+
+.modal-title {
+  font-size: 4rem;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.modal-hint {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  opacity: 0.7;
+  text-transform: uppercase;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.match-log {
+  position: absolute;
+  right: 20px;
+  top: 100px;
+  width: 250px;
+  background: rgba(0, 0, 0, 0.7);
+  border-left: 3px solid var(--accent-gold);
+  padding: 15px;
+  border-radius: 0 10px 10px 0;
+  max-height: 300px;
+  z-index: 5;
+}
+
+.log-container {
+  font-size: 0.85rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.log-entry {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 5px;
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+/* --- Animation d'Attaque --- */
+@keyframes pulse-attack {
+  0% { box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.7); transform: scale(1); }
+  70% { box-shadow: 0 0 0 20px rgba(255, 68, 68, 0); transform: scale(1.05); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 68, 68, 0); transform: scale(1); }
+}
+
+.card.attacking {
+  animation: pulse-attack 1.5s infinite;
+  border: 3px solid var(--danger-color); /* Bordure Rouge */
+  z-index: 50; /* Passe au dessus des autres */
+}
+
+/* Carte face cachée (Main adverse) */
+.card.hidden {
+  background: radial-gradient(circle, #2c3e50 0%, #000 100%);
+  border: 2px solid #fff;
+  cursor: default;
+}
+.card.hidden * { display: none; } 
+
+/* Carte "Momentum" (Sur le terrain, face cachée par pression) */
+.card.momentum-flipped {
+  background-color: #333; /* Fond sombre */
+  color: #777;            /* Texte gris */
+  border: 2px dashed #ff4444; /* Bordure danger */
+  filter: grayscale(100%); /* Noir et blanc */
+  opacity: 0.8;
+}
+
+/* On ajoute une icône par dessus pour dire "Inutile" */
+.card.momentum-flipped::after {
+  content: "⚠️";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  opacity: 0.5;
+}
