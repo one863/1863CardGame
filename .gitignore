@@ -1,0 +1,36 @@
+# Dépendances (le dossier le plus lourd, ne jamais l'envoyer)
+node_modules/
+.pnp
+.pnp.js
+
+# Tests
+coverage/
+
+# Production (le résultat du build)
+dist/
+build/
+
+# Variables d'environnement (contient vos clés secrètes !)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Éditeurs (VS Code, JetBrains, etc.)
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Système (Mac/Windows)
+.DS_Store
+Thumbs.db
