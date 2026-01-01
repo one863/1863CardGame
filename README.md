@@ -1,16 +1,37 @@
-# React + Vite
+# 🎴 1863 Card Game
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Un jeu de cartes stratégique développé avec **React** et **boardgame.io**. Ce projet met en œuvre un moteur de jeu complexe incluant la gestion de phases, un système de combat et une intelligence artificielle.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🛡️ Licence & Protection
 
-## React Compiler
+Ce projet est protégé par la licence **GNU GPLv3**.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**© 2026 Yannick Zanconato**
 
-## Expanding the ESLint configuration
+En vertu de cette licence :
+- Vous pouvez copier, modifier et distribuer ce logiciel.
+- Toute œuvre dérivée doit **obligatoirement** être partagée sous la même licence GPLv3 (Open Source).
+- L'utilisation dans des logiciels propriétaires fermés est interdite.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## ✨ Fonctionnalités actuelles
+
+- **Moteur de Jeu (Engine) :** Gestion complète des états (`GameState`), des phases de jeu et des actions des joueurs.
+- **Système de Combat :** Logique de résolution des affrontements intégrée.
+- **Intelligence Artificielle :** Système de décision automatisé via un hook dédié (`useAI`).
+- **Deck Builder :** Interface permettant la création et la validation de decks.
+- **Architecture Moderne :** Utilisation de React Context pour une gestion fluide des données de jeu.
+
+---
+
+## 🛠️ Installation et Lancement local
+
+Assurez-vous d'avoir [Node.js](https://nodejs.org/) installé sur votre machine.
+
+1. **Cloner le dépôt**
+   ```bash
+   git clone [https://github.com/votre-pseudo/1863cardgame.git](https://github.com/votre-pseudo/1863cardgame.git)
+   cd 1863cardgame
