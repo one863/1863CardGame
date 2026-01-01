@@ -1,0 +1,22 @@
+[
+  { "id": 1, "name": "K. Mbappé", "pos": "ATT", "vaep": 9, "cost": 5, "effects": ["FINITION"] },
+  { "id": 2, "name": "O. Dembélé", "pos": "ATT", "vaep": 8, "cost": 5, "effects": ["DRIBBLEUR"] },
+  { "id": 3, "name": "Bradley Barcola", "pos": "ATT", "vaep": 7, "cost": 5, "effects": ["VITESSE"] },
+  { "id": 4, "name": "Gonçalo Ramos", "pos": "ATT", "vaep": 7, "cost": 5, "effects": ["FINITION"] },
+  { "id": 5, "name": "Vitinha", "pos": "MID", "vaep": 8, "cost": 5, "effects": ["PASSE"] },
+  { "id": 6, "name": "W. Zaïre-Emery", "pos": "MID", "vaep": 7, "cost": 5, "effects": ["JEUNESSE"] },
+  { "id": 7, "name": "Fabian Ruiz", "pos": "MID", "vaep": 7, "cost": 5, "effects": ["VISION"] },
+  { "id": 8, "name": "Joao Neves", "pos": "MID", "vaep": 8, "cost": 5, "effects": ["MOTEUR"] },
+  { "id": 9, "name": "Marquinhos", "pos": "DEF", "vaep": 8, "cost": 5, "effects": ["MUR"] },
+  { "id": 10, "name": "Achraf Hakimi", "pos": "DEF", "vaep": 8, "cost": 5, "effects": ["VITESSE"] },
+  { "id": 11, "name": "Nuno Mendes", "pos": "DEF", "vaep": 7, "cost": 5, "effects": ["EXPLOSIF"] },
+  { "id": 12, "name": "Lucas Beraldo", "pos": "DEF", "vaep": 6, "cost": 5, "effects": ["SOLIDE"] },
+  { "id": 13, "name": "Milan Skriniar", "pos": "DEF", "vaep": 7, "cost": 5, "effects": ["MUR"] },
+  { "id": 14, "name": "G. Donnarumma", "pos": "GK", "vaep": 9, "cost": 5, "effects": ["ARRET"] },
+  { "id": 15, "name": "Matvei Safonov", "pos": "GK", "vaep": 7, "cost": 5, "effects": ["ARRET"] },
+  { "id": 16, "name": "Lamine Yamal", "pos": "ATT", "vaep": 8, "cost": 5, "effects": ["PÉPITE"] },
+  { "id": 17, "name": "Jude Bellingham", "pos": "MID", "vaep": 9, "cost": 5, "effects": ["BOX-TO-BOX"] },
+  { "id": 18, "name": "William Saliba", "pos": "DEF", "vaep": 8, "cost": 5, "effects": ["MUR"] },
+  { "id": 19, "name": "Rodri", "pos": "MID", "vaep": 9, "cost": 5, "effects": ["SENTINELLE"] },
+  { "id": 20, "name": "Erling Haaland", "pos": "ATT", "vaep": 9, "cost": 5, "effects": ["CYBORG"] }
+]
